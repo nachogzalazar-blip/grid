@@ -3,9 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>grid</title>
+
   <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --border: #222;
+      --text: #e0e0e0;
+      --muted: #777;
+      --accent: #4ade80;
+      --accent-dim: #2d8a54;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
       background: #0a0a0a;
@@ -13,72 +26,526 @@
       max-width: 640px;
       margin: 0 auto;
       padding: 3rem 1.5rem;
-      line-height: 1.6;
+      line-height: 1.7;
     }
-    a { color: #4ade80; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    h1 { font-size: 2rem; margin-bottom: 0.3rem; }
-    .subtitle { color: #888; margin-bottom: 3rem; }
+
+    nav {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    nav ul { list-style: none; display: flex; gap: 1.5rem; }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+    section { margin: 4rem 0; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+
     h2 {
-      font-size: 1rem;
-      color: #4ade80;
-      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      color: var(--accent);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
     }
-    section { margin-bottom: 3rem; }
-    ul { list-style: none; }
-    li { margin-bottom: 0.5rem; }
-    li a { color: #e0e0e0; }
-    li a:hover { color: #4ade80; }
+
+    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 3rem; }
+
+    .subtitle::after {
+      content: '_';
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .about-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      margin-bottom: 1rem;
+      object-fit: cover;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      display: block;
+      font-size: 1.8rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .project-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+    .project-card p { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+
     .tag {
       display: inline-block;
-      background: #1a1a1a;
-      padding: 0.2rem 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
       border-radius: 3px;
-      font-size: 0.8rem;
-      color: #888;
+      font-size: 0.75rem;
+      color: var(--muted);
       margin-right: 0.3rem;
     }
-    footer {
-      margin-top: 4rem;
-      color: #555;
+
+    .skill {
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .skill-bar {
+      height: 6px;
+      background: var(--surface);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -1.75rem;
+      top: 0.3rem;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .timeline-date {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .timeline-item p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+
+    .blog-post {
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .blog-post:last-child {
+      border-bottom: none;
+    }
+
+    .blog-post a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .blog-post a:hover {
+      color: var(--accent);
+    }
+
+    .blog-post span {
+      color: var(--muted);
       font-size: 0.8rem;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .contact-links a:hover {
+      text-decoration: underline;
+    }
+
+    .silly { font-size: 0.85rem; color: var(--muted); font-style: italic; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0.8rem 1rem; }
+      nav ul { gap: 0.8rem; }
+      .container { padding: 2rem 1rem; }
+      h1 { font-size: 1.8rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
+
 <body>
 
-  <h1>grid</h1>
-  <p class="subtitle">maker / hardware / code</p>
+  <nav>
+    <div class="logo">grid</div>
 
-  <section>
-    <h2>Proyectos</h2>
     <ul>
-      <li><a href="https://github.com/nachogzalazar.blip/custom-lightpad">hackpad 9-key</a> <span class="tag">kicad</span><span class="tag">rp2040</span><span class="tag">kmk</span></li>
+      <li><a href="#about">about</a></li>
+      <li><a href="#stats">stats</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#stack">stack</a></li>
+      <li><a href="#timeline">timeline</a></li>
+      <li><a href="#blog">blog</a></li>
+      <li><a href="#contact">contact</a></li>
     </ul>
-  </section>
+  </nav>
 
-  <section>
-    <h2>Intereses</h2>
-    <ul>
-      <li>teclados mecánicos</li>
-      <li>pcb design</li>
-      <li>3d printing</li>
-      <li>embedded</li>
-    </ul>
-  </section>
 
-  <section>
-    <h2>Links</h2>
-    <ul>
-      <li><a href="https://github.com/nachogzalazar.blip">github</a></li>
-    </ul>
-  </section>
+  <main class="container">
+
+    <section id="about">
+
+      <h1>grid</h1>
+
+      <p class="subtitle">
+        maker / hardware / code
+      </p>
+
+    </section>
+
+
+    <section id="stats">
+
+      <h2>Stats</h2>
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <span class="stat-num">01</span>
+          <span class="stat-label">projects</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-num">04</span>
+          <span class="stat-label">interests</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-num">00</span>
+          <span class="stat-label">years pro</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">ideas</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section id="projects">
+
+      <h2>Proyectos</h2>
+
+      <div class="project-card">
+
+        <h3>
+          <a
+            href="https://github.com/nachogzalazar.blip/custom-lightpad"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            hackpad 9-key
+          </a>
+        </h3>
+
+        <p>
+          Custom macropad de 9 teclas diseñado desde cero.
+        </p>
+
+        <span class="tag">kicad</span>
+        <span class="tag">rp2040</span>
+        <span class="tag">kmk</span>
+
+      </div>
+
+    </section>
+
+
+    <section id="stack">
+
+      <h2>Stack</h2>
+
+      <div class="skill">
+
+        <div class="skill-header">
+          <span>KiCad</span>
+          <span>40%</span>
+        </div>
+
+        <div class="skill-bar">
+          <div
+            class="skill-fill"
+            style="width: 40%;"
+          ></div>
+        </div>
+
+      </div>
+
+
+      <div class="skill">
+
+        <div class="skill-header">
+          <span>Python</span>
+          <span>40%</span>
+        </div>
+
+        <div class="skill-bar">
+          <div
+            class="skill-fill"
+            style="width: 40%;"
+          ></div>
+        </div>
+
+      </div>
+
+
+      <div class="skill">
+
+        <div class="skill-header">
+          <span>Linux</span>
+          <span>60%</span>
+        </div>
+
+        <div class="skill-bar">
+          <div
+            class="skill-fill"
+            style="width: 60%;"
+          ></div>
+        </div>
+
+      </div>
+
+
+      <div class="skill">
+
+        <div class="skill-header">
+          <span>3D printing</span>
+          <span>30%</span>
+        </div>
+
+        <div class="skill-bar">
+          <div
+            class="skill-fill"
+            style="width: 30%;"
+          ></div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section id="timeline">
+
+      <h2>Timeline</h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+
+          <div class="timeline-dot"></div>
+
+          <span class="timeline-date">
+            2026
+          </span>
+
+          <h3>
+            hackpad
+          </h3>
+
+          <p>
+            Primer proyecto de hardware diseñado desde cero.
+          </p>
+
+        </div>
+
+
+        <div class="timeline-item">
+
+          <div class="timeline-dot"></div>
+
+          <span class="timeline-date">
+            ahora
+          </span>
+
+          <h3>
+            aprendiendo
+          </h3>
+
+          <p>
+            Electrónica, PCB design, firmware y desarrollo.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section id="blog">
+
+      <h2>Blog</h2>
+
+      <div class="blog-post">
+
+        <a href="#">
+          diseñando mi primer PCB
+        </a>
+
+        <br />
+
+        <span>
+          próximamente
+        </span>
+
+      </div>
+
+
+      <div class="blog-post">
+
+        <a href="#">
+          construyendo un hackpad desde cero
+        </a>
+
+        <br />
+
+        <span>
+          próximamente
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <section id="contact">
+
+      <h2>Contact</h2>
+
+      <div class="contact-links">
+
+        <a
+          href="https://github.com/nachogzalazar.blip"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          github
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
 
   <footer>
-    <p>hecho con html + css. sin frameworks.</p>
+
+    <p>
+      hecho con html + css. sin frameworks.
+    </p>
+
   </footer>
 
 </body>
-</html>   
+</html>
