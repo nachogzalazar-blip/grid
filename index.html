@@ -17,37 +17,64 @@
       --accent-dim: #2d8a54;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
 
     body {
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      background: #0a0a0a;
-      color: #e0e0e0;
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
+      background: var(--bg);
+      color: var(--text);
+      max-width: 100%;
+      margin: 0;
       line-height: 1.7;
     }
 
     nav {
       position: sticky;
       top: 0;
-      background: var(--bg);
+      width: 100%;
+      background: rgba(10, 10, 10, 0.95);
       border-bottom: 1px solid var(--border);
       padding: 1rem 2rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 2rem;
       z-index: 100;
+      backdrop-filter: blur(8px);
     }
 
     nav .logo {
       font-size: 1.2rem;
       font-weight: bold;
       color: var(--accent);
+      flex-shrink: 0;
     }
 
-    nav ul { list-style: none; display: flex; gap: 1.5rem; }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav ul::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav li {
+      flex-shrink: 0;
+    }
 
     nav a {
       color: var(--muted);
@@ -56,12 +83,58 @@
       transition: color 0.2s;
     }
 
-    nav a:hover { color: var(--accent); }
+    nav a:hover {
+      color: var(--accent);
+    }
 
-    .container { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .language-selector {
+      display: flex;
+      gap: 0.3rem;
+      flex-shrink: 0;
+    }
 
-    section { margin: 4rem 0; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
-    section:last-child { border-bottom: none; }
+    .language-selector button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.45rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .language-selector button:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .language-selector button.active {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    section {
+      margin: 4rem 0;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.7s ease both;
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
 
     h2 {
       font-size: 0.85rem;
@@ -71,26 +144,19 @@
       margin-bottom: 1.5rem;
     }
 
-    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 3rem; }
+    h3 {
+      font-size: 1rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 3rem;
+    }
 
     .subtitle::after {
       content: '_';
       animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .about-img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-      margin-bottom: 1rem;
-      object-fit: cover;
     }
 
     .stats-grid {
@@ -105,6 +171,12 @@
       border-radius: 6px;
       padding: 1rem;
       text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
     }
 
     .stat-num {
@@ -128,9 +200,30 @@
       transition: border-color 0.2s, transform 0.2s;
     }
 
-    .project-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .project-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
-    .project-card p { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .project-card h3 {
+      margin-bottom: 0.3rem;
+    }
+
+    .project-card h3 a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .project-card h3 a:hover {
+      color: var(--accent);
+    }
+
+    .project-card p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
 
     .tag {
       display: inline-block;
@@ -165,7 +258,7 @@
       height: 100%;
       background: var(--accent);
       border-radius: 3px;
-      transition: width 0.3s;
+      animation: fillBar 1.2s ease-out;
     }
 
     .timeline {
@@ -185,8 +278,12 @@
 
     .timeline-item {
       position: relative;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       padding-left: 1rem;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
     }
 
     .timeline-dot {
@@ -197,6 +294,8 @@
       height: 10px;
       background: var(--accent);
       border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+      animation: pulse 2s infinite;
     }
 
     .timeline-date {
@@ -223,6 +322,7 @@
     .blog-post a {
       color: var(--text);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
     .blog-post a:hover {
@@ -250,8 +350,6 @@
       text-decoration: underline;
     }
 
-    .silly { font-size: 0.85rem; color: var(--muted); font-style: italic; }
-
     footer {
       text-align: center;
       padding: 2rem;
@@ -260,12 +358,92 @@
       border-top: 1px solid var(--border);
     }
 
-    @media (max-width: 600px) {
-      nav { padding: 0.8rem 1rem; }
-      nav ul { gap: 0.8rem; }
-      .container { padding: 2rem 1rem; }
-      h1 { font-size: 1.8rem; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fillBar {
+      from {
+        width: 0;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 7px rgba(74, 222, 128, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+      }
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0.8rem 1rem;
+        gap: 1rem;
+      }
+
+      nav ul {
+        gap: 1rem;
+      }
+
+      nav a {
+        font-size: 0.8rem;
+      }
+
+      .container {
+        padding: 3rem 1rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 450px) {
+      nav {
+        gap: 0.7rem;
+      }
+
+      nav .logo {
+        font-size: 1rem;
+      }
+
+      .language-selector button {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.35rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
@@ -273,17 +451,24 @@
 <body>
 
   <nav>
+
     <div class="logo">grid</div>
 
     <ul>
-      <li><a href="#about">about</a></li>
-      <li><a href="#stats">stats</a></li>
-      <li><a href="#projects">projects</a></li>
-      <li><a href="#stack">stack</a></li>
-      <li><a href="#timeline">timeline</a></li>
-      <li><a href="#blog">blog</a></li>
-      <li><a href="#contact">contact</a></li>
+      <li><a href="#about" data-es="about" data-en="about">about</a></li>
+      <li><a href="#stats" data-es="stats" data-en="stats">stats</a></li>
+      <li><a href="#projects" data-es="proyectos" data-en="projects">proyectos</a></li>
+      <li><a href="#stack" data-es="stack" data-en="stack">stack</a></li>
+      <li><a href="#timeline" data-es="línea de tiempo" data-en="timeline">línea de tiempo</a></li>
+      <li><a href="#blog" data-es="blog" data-en="blog">blog</a></li>
+      <li><a href="#contact" data-es="contacto" data-en="contact">contacto</a></li>
     </ul>
+
+    <div class="language-selector">
+      <button id="es-btn" class="active" onclick="setLanguage('es')">ES</button>
+      <button id="en-btn" onclick="setLanguage('en')">EN</button>
+    </div>
+
   </nav>
 
 
@@ -293,8 +478,12 @@
 
       <h1>grid</h1>
 
-      <p class="subtitle">
-        maker / hardware / code
+      <p
+        class="subtitle"
+        data-es="maker / hardware / código"
+        data-en="maker / hardware / code"
+      >
+        maker / hardware / código
       </p>
 
     </section>
@@ -302,28 +491,57 @@
 
     <section id="stats">
 
-      <h2>Stats</h2>
+      <h2
+        data-es="Stats"
+        data-en="Stats"
+      >
+        Stats
+      </h2>
 
       <div class="stats-grid">
 
         <div class="stat-card">
           <span class="stat-num">01</span>
-          <span class="stat-label">projects</span>
+          <span
+            class="stat-label"
+            data-es="proyectos"
+            data-en="projects"
+          >
+            proyectos
+          </span>
         </div>
 
         <div class="stat-card">
           <span class="stat-num">04</span>
-          <span class="stat-label">interests</span>
+          <span
+            class="stat-label"
+            data-es="intereses"
+            data-en="interests"
+          >
+            intereses
+          </span>
         </div>
 
         <div class="stat-card">
           <span class="stat-num">00</span>
-          <span class="stat-label">years pro</span>
+          <span
+            class="stat-label"
+            data-es="años pro"
+            data-en="years pro"
+          >
+            años pro
+          </span>
         </div>
 
         <div class="stat-card">
           <span class="stat-num">∞</span>
-          <span class="stat-label">ideas</span>
+          <span
+            class="stat-label"
+            data-es="ideas"
+            data-en="ideas"
+          >
+            ideas
+          </span>
         </div>
 
       </div>
@@ -333,7 +551,12 @@
 
     <section id="projects">
 
-      <h2>Proyectos</h2>
+      <h2
+        data-es="Proyectos"
+        data-en="Projects"
+      >
+        Proyectos
+      </h2>
 
       <div class="project-card">
 
@@ -347,7 +570,10 @@
           </a>
         </h3>
 
-        <p>
+        <p
+          data-es="Custom macropad de 9 teclas diseñado desde cero."
+          data-en="Custom 9-key macropad designed from scratch."
+        >
           Custom macropad de 9 teclas diseñado desde cero.
         </p>
 
@@ -362,7 +588,12 @@
 
     <section id="stack">
 
-      <h2>Stack</h2>
+      <h2
+        data-es="Stack"
+        data-en="Stack"
+      >
+        Stack
+      </h2>
 
       <div class="skill">
 
@@ -436,7 +667,12 @@
 
     <section id="timeline">
 
-      <h2>Timeline</h2>
+      <h2
+        data-es="Línea de tiempo"
+        data-en="Timeline"
+      >
+        Línea de tiempo
+      </h2>
 
       <div class="timeline">
 
@@ -448,12 +684,18 @@
             2026
           </span>
 
-          <h3>
-            hackpad
+          <h3
+            data-es="Primer proyecto de hardware"
+            data-en="First hardware project"
+          >
+            Primer proyecto de hardware
           </h3>
 
-          <p>
-            Primer proyecto de hardware diseñado desde cero.
+          <p
+            data-es="Comenzando a experimentar con electrónica y hardware."
+            data-en="Starting to experiment with electronics and hardware."
+          >
+            Comenzando a experimentar con electrónica y hardware.
           </p>
 
         </div>
@@ -464,15 +706,71 @@
           <div class="timeline-dot"></div>
 
           <span class="timeline-date">
-            ahora
+            2026
           </span>
 
           <h3>
+            hackpad 9-key
+          </h3>
+
+          <p
+            data-es="Diseño de un macropad personalizado con KiCad, RP2040 y KMK."
+            data-en="Designing a custom macropad using KiCad, RP2040 and KMK."
+          >
+            Diseño de un macropad personalizado con KiCad, RP2040 y KMK.
+          </p>
+
+        </div>
+
+
+        <div class="timeline-item">
+
+          <div class="timeline-dot"></div>
+
+          <span class="timeline-date">
+            2026
+          </span>
+
+          <h3
+            data-es="Web personal"
+            data-en="Personal website"
+          >
+            Web personal
+          </h3>
+
+          <p
+            data-es="Creación de grid, una página personal hecha con HTML y CSS."
+            data-en="Creating grid, a personal website built with HTML and CSS."
+          >
+            Creación de grid, una página personal hecha con HTML y CSS.
+          </p>
+
+        </div>
+
+
+        <div class="timeline-item">
+
+          <div class="timeline-dot"></div>
+
+          <span class="timeline-date"
+            data-es="ahora"
+            data-en="now"
+          >
+            ahora
+          </span>
+
+          <h3
+            data-es="aprendiendo"
+            data-en="learning"
+          >
             aprendiendo
           </h3>
 
-          <p>
-            Electrónica, PCB design, firmware y desarrollo.
+          <p
+            data-es="Electrónica, PCB design, firmware, Linux y desarrollo."
+            data-en="Electronics, PCB design, firmware, Linux and development."
+          >
+            Electrónica, PCB design, firmware, Linux y desarrollo.
           </p>
 
         </div>
@@ -484,17 +782,26 @@
 
     <section id="blog">
 
-      <h2>Blog</h2>
+      <h2>
+        Blog
+      </h2>
 
       <div class="blog-post">
 
-        <a href="#">
+        <a
+          href="#"
+          data-es="diseñando mi primer PCB"
+          data-en="designing my first PCB"
+        >
           diseñando mi primer PCB
         </a>
 
         <br />
 
-        <span>
+        <span
+          data-es="próximamente"
+          data-en="coming soon"
+        >
           próximamente
         </span>
 
@@ -503,13 +810,20 @@
 
       <div class="blog-post">
 
-        <a href="#">
+        <a
+          href="#"
+          data-es="construyendo un hackpad desde cero"
+          data-en="building a hackpad from scratch"
+        >
           construyendo un hackpad desde cero
         </a>
 
         <br />
 
-        <span>
+        <span
+          data-es="próximamente"
+          data-en="coming soon"
+        >
           próximamente
         </span>
 
@@ -520,7 +834,12 @@
 
     <section id="contact">
 
-      <h2>Contact</h2>
+      <h2
+        data-es="Contacto"
+        data-en="Contact"
+      >
+        Contacto
+      </h2>
 
       <div class="contact-links">
 
@@ -541,11 +860,31 @@
 
   <footer>
 
-    <p>
+    <p
+      data-es="hecho con html + css. sin frameworks."
+      data-en="made with html + css. no frameworks."
+    >
       hecho con html + css. sin frameworks.
     </p>
 
   </footer>
+
+
+  <script>
+    function setLanguage(language) {
+
+      document.documentElement.lang = language;
+
+      document.querySelectorAll("[data-es][data-en]").forEach(element => {
+        element.textContent = element.getAttribute("data-" + language);
+      });
+
+      document.getElementById("es-btn").classList.remove("active");
+      document.getElementById("en-btn").classList.remove("active");
+
+      document.getElementById(language + "-btn").classList.add("active");
+    }
+  </script>
 
 </body>
 </html>
