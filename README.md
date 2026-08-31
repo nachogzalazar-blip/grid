@@ -18,21 +18,26 @@ astro + css puro, deployado en github pages
 
 
 
-## grid
+
+
+
+   
+
+## GRID
 A minimalisgrid
 A minimalist personal site. It's not a portfolio, it's not a blog. It's a space where I share what I do and what interests me.
 
-## what's here
+## WHAT'S THERE
 Projects: Links to what I'm building (hackpads, scripts, weird stuff).
 Interests: Hardware, keyboards, code.
 Design: Dark mode, monospace, no heavy frameworks.
 stack
 Astro + pure CSS, deployed on GitHub Pages.
 
-## projects
+## PROJECTS
 hackpad 9-key — mechanical macropad, xiao rp2040, kmk.
 grid
 A minimalist personal site. It's not a portfolio, it's not a blog. It's a space where I share what I do and what interests me.
 
-## what's here
+## WHAT'S HERE
 grid: A minimalist personal site. It's not a portfolio, it's not a blog. It's a space where I share what I do and what interests me.
